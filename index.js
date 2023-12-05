@@ -1,19 +1,24 @@
 const fs = require("fs");
 const PDFDocument = require("pdfkit-table");
+const currentInvoiceNumber = require("./invoiceNumCounter.js");
 
+console.log(`Exported Invoice Number: ${currentInvoiceNumber}`);
 // Create a document
 const doc = new PDFDocument();
 
 // Pipe its output somewhere, like to a file or HTTP response
 // See below for browser usage
+const invoiceNum = (0 + currentInvoiceNumber).toString().padStart(5, "0");
 const fullName = "John Snow";
+const accNo = "123123123123";
 const address = "Winterfell Winterfell Winterfell WinterfellWinterfell";
 const date = new Date();
 const tDate = date.toLocaleDateString("en-GB");
 const phoneNumber = "0123456789";
 const email = "example@gmail.com";
-const invoiceNum = "00000";
 const billTo = "Eleventeen";
+const total = "RM1000";
+const bank = "Maybank";
 let month = date.toLocaleString("default", { month: "long" });
 console.log(month);
 doc.pipe(fs.createWriteStream(`${month}test.pdf`, { flags: "w" }));
@@ -28,24 +33,24 @@ doc
 doc.moveDown(2);
 doc.fontSize(30).text(`INVOICE`, { align: "left" });
 doc.moveDown(2);
-doc.fontSize(14).text(`${fullName}`, { continued: true, align: "left" });
+doc.fontSize(12).text(`${fullName}`, { continued: true, align: "left" });
 doc
   .fill("black")
-  .fontSize(14)
+  .fontSize(12)
   .text(`${tDate}`, { align: "right", underline: true, color: "black" });
 doc.moveDown(1);
 doc
-  .fontSize(14)
+  .fontSize(12)
   .text(`${address}`, { align: "left", width: "150" })
   .moveDown()
-  .fontSize(14)
+  .fontSize(12)
   .text(`${phoneNumber}`, { align: "left", width: "150" });
-doc.fontSize(14).text(`${email}`, { continued: true, align: "left" });
+doc.fontSize(12).text(`${email}`, { continued: true, align: "left" });
 doc
-  .fontSize(14)
+  .fontSize(12)
   .text(`${invoiceNum}`, { align: "right", underline: true, color: "black" });
 doc.moveDown(2);
-doc.fontSize(16).text(`BILL TO: ${billTo}`);
+doc.fontSize(14).text(`BILL TO: ${billTo}`);
 drawLine(400);
 doc.moveDown(3);
 const table = {
@@ -76,8 +81,8 @@ const table = {
     {
       description: `Programming Instructor Services for ${month} `,
       qty: "1",
-      unitPrice: "$2",
-      total: "$ 3",
+      unitPrice: "RM 2",
+      total: "RM 3",
     },
     {
       description: "",
@@ -95,14 +100,26 @@ const table = {
 };
 
 doc.table(table, {
-  minRowHeight: 20,
-  prepareHeader: () => doc.font("Helvetica-Bold").fontSize(14),
+  minRowHeight: 30,
+  prepareHeader: () => doc.font("Helvetica-Bold").fontSize(12),
   prepareRow: (row, indexColumn, indexRow, rectRow) => {
-    doc.font("Helvetica").fontSize(8);
+    doc.font("Helvetica").fontSize(11);
     indexColumn === 0 &&
       doc.addBackground(rectRow, indexRow % 2 ? "grey" : "white", 0.15);
   },
 });
+
+doc
+  .fontSize(10)
+  .text(`Payment Instructions: `, {
+    continued: true,
+    align: "left",
+  })
+  .fontSize(12)
+  .text(`Balance Due   ${total}`, { align: "right" });
+doc
+  .fontSize(10)
+  .text(`${fullName} ${bank} ${accNo}`, { align: "left", width: 150 });
 doc.end();
 
 function drawLine(yAxis) {
