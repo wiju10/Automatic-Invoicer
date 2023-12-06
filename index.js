@@ -16,14 +16,13 @@ const billTo = "Eleventeen";
 const total = "RM1000";
 const bank = "anActualBank";
 
-
 const invoiceNum = (0 + currentInvoiceNumber).toString().padStart(5, "0");
 const date = new Date();
 const tDate = date.toLocaleDateString("en-GB");
 let month = date.toLocaleString("default", { month: "long" });
-doc.pipe(fs.createWriteStream(`${month}test.pdf`, { flags: "w" }));\
+doc.pipe(fs.createWriteStream(`${month}test.pdf`, { flags: "w" }));
 
-//draw rectangle 
+//draw rectangle
 doc
   .save()
   .moveTo(0, 25)
