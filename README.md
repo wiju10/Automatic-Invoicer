@@ -5,14 +5,18 @@
 1. Clone the repository
 2. Run the command `npm install`. If you don't have node.js and npm installed yet, get it here https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 3. Replace variables in `index.js` with your own details.
-   `const fullName = "John Snow";`
+
+   ```js
+   const fullName = "John Snow";`
    `const accNo = "123123123123";`
    `const address = "Winterfell Winterfell Winterfell WinterfellWinterfell";`
    `const phoneNumber = "0123456789";`
    `const email = "example@gmail.com";`
    `const billTo = "Eleventeen";`
    `const total = "RM1000";`
-   `const bank = "anActualBank";`
+   `const bank = "anActualBank";
+   ```
+
 4. Use the command `node index.js` to generate your own PDF
 
 ## Scheduling it as a cronjob
